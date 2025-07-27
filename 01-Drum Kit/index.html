@@ -41,10 +41,9 @@
             <span class="sound">tom</span>
         </div>
         <div data-key="76" class="key">
-            <kbd>I</kbd>
+            <kbd>L</kbd>
             <span class="sound">tinker</span>
         </div>
-</body>
 
 <audio data-key="65" src="sound/clap.wav"></audio>
 <audio data-key="83" src="sound/hihat.wav"></audio>
@@ -57,7 +56,26 @@
 <audio data-key="76" src="sound/tink.wav"></audio>
 
 <script>
+    function playSound(e){
+         const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+        const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+        if(!audio) return; //stops all keys from playing
+        audio.currentTime = 0; //rewind to start
+        audio.play();
+        key.classList.add('playing');
+    }
 
+    function removeTransition(e){ //making the function
+        if (e.propertyName !== 'transform') return;
+
+        this.classList.remove('playing'); //this is equal to key
+    }
+
+    const keys = document.querySelectorAll('.key');
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+    window.addEventListener('keydown', playSound);
 </script>
 
+</body>
 </html>
